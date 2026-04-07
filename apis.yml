@@ -10,17 +10,16 @@ created: '2024-12-03'
 modified: '2026-03-16'
 position: Consumer
 tags:
-  - Federal Government
-  - Consumer Protection
   - Antitrust
+  - Consumer Protection
+  - Federal Government
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-trade-commission/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
   - aid: federal-trade-commission:federal-trade-commission
     name: Federal Trade Commission
-    tags:
-      - API
+    tags: []
     humanURL: https://www.ftc.gov/developer
     baseURL: https://api.ftc.gov
     properties:
