@@ -90,6 +90,10 @@ apis:
       - type: E-Filing
         url: https://www.hsr.gov
 common:
+  - type: GitHubOrganization
+    url: https://github.com/FederalTradeCommission
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/federal-trade-commission
   - type: Website
     url: https://www.ftc.gov/
   - type: Documentation
