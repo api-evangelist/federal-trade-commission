@@ -90,6 +90,8 @@ apis:
       - type: E-Filing
         url: https://www.hsr.gov
 common:
+  - type: DomainSecurity
+    url: security/federal-trade-commission-domain-security.yml
   - type: GitHubOrganization
     url: https://github.com/FederalTradeCommission
   - type: LinkedIn
@@ -104,6 +106,8 @@ common:
     url: https://www.ftc.gov/policy/research
   - type: Consumer Resources
     url: https://consumer.ftc.gov
+  - url: https://www.ftc.gov/feeds/press-release.xml
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
