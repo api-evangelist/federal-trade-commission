@@ -34,7 +34,7 @@ tags:
   - Open Data
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-trade-commission/refs/heads/main/apis.yml
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
   - aid: federal-trade-commission:developer-portal
     name: FTC Developer Portal
