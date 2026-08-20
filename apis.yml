@@ -29,6 +29,13 @@ tags:
   - Antitrust
   - Consumer Protection
   - Do Not Call
+  - Federal-Government
+  - Law Enforcement
+  - Open Data
+tags_raw:
+  - Antitrust
+  - Consumer Protection
+  - Do Not Call
   - Federal Government
   - Law Enforcement
   - Open Data
@@ -45,6 +52,9 @@ apis:
     humanURL: https://www.ftc.gov/developer
     baseURL: https://api.ftc.gov
     tags:
+      - Federal-Government
+      - Documentation
+    tags_raw:
       - Federal Government
       - Documentation
     properties:
