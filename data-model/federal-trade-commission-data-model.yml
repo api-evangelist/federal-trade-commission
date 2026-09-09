@@ -1,0 +1,134 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api,
+  https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices, and live
+  responses from https://api.ftc.gov/v0 probed 2026-09-09
+specification: API Commons Data Model
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+description: >-
+  Entity model of the FTC public API, derived from the agency's own field tables and
+  confirmed against live JSON:API responses. There is no OpenAPI to read $refs from, so
+  relationships are read from the JSON:API `type`/`relationships` members and from the
+  documented attribute names. The model is flat: two independent root entities, no
+  cross-references between them.
+entities:
+  - name: dnc_complaint
+    jsonapi_type: dnc_complaint
+    endpoint: GET /v0/dnc-complaints
+    single: GET /v0/dnc-complaints/{id}
+    id:
+      field: id
+      format: 32-character lowercase hex string
+      example_shape: 32 hex characters
+    description: >-
+      One consumer report of an unwanted or illegal telemarketing call, as filed with the
+      FTC. Roughly the public projection of the Do Not Call complaint corpus.
+    attributes:
+      - name: company-phone-number
+        type: string
+        description: Originating phone number reported by the consumer; frequently empty.
+      - name: created-date
+        type: string
+        format: ISO 8601 timestamp
+        description: When the complaint was submitted.
+      - name: violation-date
+        type: string
+        format: ISO 8601 timestamp
+        description: When the unwanted call was received.
+      - name: consumer-city
+        type: string
+        description: Reported consumer city. Optional.
+      - name: consumer-state
+        type: string
+        description: Reported consumer state. Optional.
+      - name: consumer-area-code
+        type: string
+        description: Consumer's area code. Optional.
+      - name: subject
+        type: string
+        description: Reported topic of the call. Optional, frequently empty.
+      - name: recorded-message-or-robocall
+        type: string
+        enum: ['Y', 'N']
+        description: Whether the call was a recorded message or robocall.
+      - name: seq
+        type: integer
+        description: >-
+          Sequence number present in live responses (observed 2026-09-09) but absent from
+          the FTC's published field table.
+    relationships: []
+    filterable_by:
+      - created_date, created_date_from, created_date_to
+      - violation_date, violation_date_from, violation_date_to
+      - state, city (requires state), area_code, is_robocall
+    data_quality_note: >-
+      Live sampling on 2026-09-09 returned records whose attribute VALUES were plainly
+      misaligned with their field names (a date in company-phone-number, a company name in
+      consumer-city). This is recorded as an observation about the served data, not
+      corrected here — the model above is the FTC's documented schema.
+  - name: early_termination_notice
+    jsonapi_type: early_termination_notice
+    endpoint: GET /v0/hsr-early-termination-notices
+    single: GET /v0/hsr-early-termination-notices?filter[id][value]={uuid}
+    id:
+      field: id
+      format: UUID v4
+    description: >-
+      One Hart-Scott-Rodino premerger notification for which early termination of the
+      waiting period was granted. Programme suspended February 2021; the endpoint serves
+      the historical record.
+    attributes:
+      - name: title
+        type: string
+        description: 'Record title, formatted "<transaction-number>: <acquiring> ; <acquired>".'
+      - name: transaction-number
+        type: string
+        description: HSR transaction identifier, e.g. 20110718.
+      - name: acquiring-party
+        type: string
+      - name: acquired-party
+        type: string
+      - name: acquired-entities
+        type: array
+        items: string
+      - name: date
+        type: string
+        format: date
+        description: Transaction date.
+      - name: created
+        type: string
+        format: ISO 8601 timestamp
+      - name: updated
+        type: string
+        format: ISO 8601 timestamp
+      - name: tags
+        type: array
+        items: string
+    relationships: []
+    filterable_by:
+      - title (CONTAINS operator supported)
+      - transaction_number
+      - date (condition operators supported)
+    links_observed:
+      - self
+      - working-copy
+relationships: []
+relationship_note: >-
+  No has_one / has_many / belongs_to edge exists between the two entities. They are
+  separate programmes (consumer protection vs. antitrust) that happen to share a gateway.
+  acquiring-party / acquired-party are free-text strings, not references to a party
+  entity, so the merger graph is not queryable as a graph.
+envelope:
+  ref: conventions/federal-trade-commission-conventions.yml
+wider_surface:
+  note: >-
+    https://api.ftc.gov/v0 returns a JSON:API index of 85 resource links (Drupal entity
+    types — node--*, taxonomy_term--*, media--*, paragraph--*, feeds_feed--*). Only the
+    two entities above are documented, supported and named in the FTC's data.json
+    inventory; the rest are internal CMS types exposed by the framework and are NOT
+    modelled here.
+  index_probed: '2026-09-09'
+  index_url: https://api.ftc.gov/v0

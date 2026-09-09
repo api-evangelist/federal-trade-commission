@@ -1,0 +1,88 @@
+generated: '2026-09-09'
+method: searched
+source: https://www.ftc.gov/developer
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+description: >-
+  Versioning, change-communication and operational-transparency posture of the FTC public
+  API. Searched 2026-09-09. The headline finding is an absence: an API that has been in
+  production since 2018 is still labelled v0 and carries no changelog, no deprecation
+  policy, no SLA and no status page.
+versioning:
+  scheme: url-path
+  current_version: v0
+  base: https://api.ftc.gov/v0
+  first_released: '2018-06'
+  first_release_evidence: >-
+    https://www.ftc.gov/enforcement/competition-matters/2018/06/ftc-launches-first-web-api-make-early-terminations-more-accessible
+  stability_statement: >-
+    "The current API version is v0, indicating that the API is under active development."
+    — https://www.ftc.gov/developer
+  breaking_change_policy: none published
+  note: >-
+    A v0 label eight years into production is itself the compatibility signal: the agency
+    has reserved the right to change the contract and has never promised otherwise.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  evidence: >-
+    No Sunset or Deprecation response header observed on api.ftc.gov (probed 2026-09-09);
+    no deprecation or retirement policy found on www.ftc.gov/developer or in
+    https://github.com/FederalTradeCommission/ftc-api-docs.
+  deprecated_operations: []
+  historical_note: >-
+    The HSR Early Termination programme itself was suspended in February 2021; the API
+    endpoint continues to serve the historical record. No machine-readable deprecation
+    signal marks that change.
+change_communication:
+  changelog_published: false
+  release_notes: false
+  evidence: >-
+    No dated changelog exists on the developer portal or in the ftc-api-docs repository
+    (last commit 2020-04-29). The only dated statement found is the endpoint reference
+    footer "Documentation updated April 13, 2023 to reflect Drupal 9 JSON structure
+    changes" — a prose note, not a changelog. No ChangeLog pointer is emitted.
+  announcement_channel: >-
+    General agency press feed only — https://www.ftc.gov/feeds/press-release.xml — which
+    is not developer-scoped.
+status_page:
+  published: false
+  url: null
+  evidence: >-
+    No status.ftc.gov, no status page linked from https://www.ftc.gov/developer, and no
+    FTC entry on the api.data.gov operator's status surface. No StatusPage pointer is
+    emitted. Uptime for the gateway layer is api.data.gov's, and the FTC does not publish
+    where to watch it.
+sla:
+  published: false
+  uptime_target: null
+  support_response_target: null
+support:
+  channels:
+    - type: email
+      value: webmaster@ftc.gov
+      scope: developer portal / API questions
+      source: https://www.ftc.gov/developer
+    - type: email
+      value: HSRHelp@ftc.gov
+      scope: HSR early termination data
+      source: https://www.ftc.gov/data.json
+    - type: email
+      value: opengov@ftc.gov
+      scope: open data / datasets
+      source: https://www.ftc.gov/data.json
+    - type: repository issues
+      value: https://github.com/FederalTradeCommission/ftc-api-docs/issues
+      scope: documentation
+data_freshness:
+  dnc_complaints: updated each weekday by approximately noon Eastern; weekends on Monday
+  hsr_early_termination: historical record; programme suspended February 2021
+gaps_for_provider:
+  - Publish a dated changelog for api.ftc.gov and link it from /developer.
+  - Graduate v0 to v1 with a stated compatibility policy, or say plainly that v0 is stable.
+  - Publish a status page, or name the api.data.gov status surface consumers should watch.
+  - Emit Sunset/Deprecation headers (RFC 8594) on any endpoint scheduled for retirement.

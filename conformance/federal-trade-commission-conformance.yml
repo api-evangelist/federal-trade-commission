@@ -1,0 +1,100 @@
+generated: '2026-09-09'
+method: probed
+source: https://api.ftc.gov/v0/hsr-early-termination-notices
+specification: API Commons Conformance
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+description: >-
+  Standards the FTC's public API surface actually declares, each with evidence pointing at
+  the exact response or document that declares it. Nothing here is inferred from marketing
+  prose. Probed 2026-09-09.
+entries:
+  - id: jsonapi-1.0
+    name: JSON:API 1.0
+    conforms: true
+    evidence: >-
+      https://api.ftc.gov/v0/hsr-early-termination-notices returns
+      Content-Type: application/vnd.api+json and a body beginning
+      {"jsonapi":{"version":"1.0","meta":{"links":{"self":{"href":"http://jsonapi.org/format/1.0/"}}}}}
+      — the contract declares the standard about itself. Probed 2026-09-09, HTTP 200.
+    caveat: >-
+      The FTC's own reference page says responses follow JSON:API "loosely"; the
+      /v0/dnc-complaints endpoint returns application/json (not the JSON:API media type)
+      with a JSON:API-shaped body.
+  - id: project-open-data-1.1
+    name: Project Open Data / DCAT-US v1.1 (OMB M-13-13 federal data inventory)
+    conforms: true
+    domain_standard: true
+    sector: us-federal-government
+    evidence: >-
+      https://www.ftc.gov/data.json (HTTP 200, application/json, 156,113 bytes, probed
+      2026-09-09) declares
+      "conformsTo": "https://project-open-data.cio.gov/v1.1/schema" and
+      "describedBy": "https://project-open-data.cio.gov/v1.1/schema/catalog.json",
+      cataloguing 95 datasets — two of which carry format "API" distributions pointing at
+      https://api.ftc.gov/v0/dnc-complaints and
+      https://api.ftc.gov/v0/hsr-early-termination-notices.
+    note: >-
+      This is the domain standard for this provider's market. A consumer who already reads
+      DCAT-US harvests the FTC's whole inventory with no bespoke connector — which is
+      exactly what catalog.data.gov does.
+  - id: usa-public-domain
+    name: U.S. Government Work / public domain data licence
+    conforms: true
+    evidence: >-
+      Every dataset in https://www.ftc.gov/data.json declares
+      "license": "http://www.usa.gov/publicdomain/label/1.0/".
+  - id: https-only
+    name: HTTPS-only transport
+    conforms: true
+    evidence: >-
+      api.ftc.gov returns strict-transport-security: max-age=31536000; includeSubDomains;
+      preload (observed 2026-09-09); plaintext requests are rejected 400 HTTPS_REQUIRED
+      per https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices.
+  - id: rfc9457
+    name: RFC 9457 Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      Errors use the api.data.gov {"error":{"code","message"}} envelope and the Drupal
+      JSON:API errors[] array; no application/problem+json response was observed.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: false
+    evidence: >-
+      /.well-known/oauth-authorization-server returns 404 on www.ftc.gov and 403
+      API_KEY_MISSING on api.ftc.gov (probed 2026-09-09). Authentication is a single
+      api.data.gov API key.
+  - id: openid-connect
+    name: OpenID Connect
+    conforms: false
+    evidence: /.well-known/openid-configuration returned 404 on every FTC host probed 2026-09-09.
+  - id: rfc9116-security-txt
+    name: RFC 9116 security.txt
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt returned 404 on www.ftc.gov, ftc.gov and consumer.ftc.gov,
+      403 on api.ftc.gov, and an HTML shell (soft-404) on www.donotcall.gov and
+      www.hsr.gov. The FTC does publish a vulnerability disclosure policy as an HTML page
+      — see security/federal-trade-commission-vulnerability-disclosure.yml — but not the
+      machine-readable file.
+  - id: rfc8594-sunset
+    name: RFC 8594 Sunset / Deprecation headers
+    conforms: false
+    evidence: No Sunset or Deprecation header observed on api.ftc.gov responses, 2026-09-09.
+  - id: openapi
+    name: OpenAPI description
+    conforms: false
+    evidence: >-
+      /openapi.json, /openapi.yaml, /swagger.json, /v0/openapi.json, /api-docs and /docs
+      all miss on api.ftc.gov (403 unkeyed, 404 with DEMO_KEY) and on www.ftc.gov (404).
+      The FTC's contract is prose plus the live JSON:API index at
+      https://api.ftc.gov/v0 (85 resource links).
+regulatory_context:
+  regime: us-federal-agency
+  authorities:
+    - OMB M-13-13 Open Data Policy (data.json inventory)
+    - OMB M-20-32 / BOD 20-01 vulnerability disclosure policy
+  note: >-
+    The FTC is the regulator here, not the regulated party; there is no SOC 2 / ISO 27001
+    / PCI posture to publish and none was found. No Compliance pointer is emitted.

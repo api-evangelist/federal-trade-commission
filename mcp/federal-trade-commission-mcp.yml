@@ -1,0 +1,84 @@
+generated: '2026-09-09'
+method: derived
+source: >-
+  Derived from the two documented operations at https://www.ftc.gov/developer — no MCP
+  server exists.
+specification: API Commons MCP
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+status: candidate
+description: >-
+  CANDIDATE ONLY. The Federal Trade Commission publishes no MCP server, hosted or local.
+  Searched 2026-09-09: no mcp.ftc.gov, no MCP endpoint on api.ftc.gov, nothing in
+  https://github.com/FederalTradeCommission (two repos: ftc-api-docs, .github), nothing on
+  https://www.ftc.gov/developer, and no FTC entry in any MCP registry found. Other federal
+  agencies have shipped MCP servers; the FTC has not. The tools below are what a server
+  over the existing public API would expose, derived from the FTC's own documented
+  parameters. They are a proposal, not a discovery.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: searched
+  note: >-
+    mode: none because nobody ships a server. If one is ever built it would carry the
+    consumer's api.data.gov key; no endpoint URL is guessed here.
+search_evidence:
+  - url: https://www.ftc.gov/developer
+    status: 200
+    finding: no MCP mention
+  - url: https://github.com/FederalTradeCommission
+    status: 200
+    finding: two repositories, neither an MCP server
+  - url: https://api.ftc.gov/.well-known/agent-card.json
+    status: 403
+    finding: gateway refuses unkeyed requests; no agent card anywhere
+candidate_tools:
+  - name: search_dnc_complaints
+    description: >-
+      Search Do Not Call consumer complaints by date range, state, city, area code and
+      robocall flag.
+    backing_operation: GET https://api.ftc.gov/v0/dnc-complaints
+    input_schema_source: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+    inputs:
+      - created_date_from (string, date-time)
+      - created_date_to (string, date-time)
+      - violation_date_from (string, date-time)
+      - violation_date_to (string, date-time)
+      - state (string)
+      - city (string, requires state)
+      - area_code (integer)
+      - is_robocall (string, "true"|"false")
+      - sort_order (string, "ASC"|"DESC")
+      - items_per_page (integer, max 50)
+      - offset (integer)
+    read_only: true
+  - name: get_dnc_complaint
+    description: Retrieve one Do Not Call complaint record by id.
+    backing_operation: GET https://api.ftc.gov/v0/dnc-complaints/{id}
+    inputs:
+      - id (string, required)
+    read_only: true
+  - name: search_hsr_early_termination_notices
+    description: >-
+      Search Hart-Scott-Rodino early termination notices by title keyword, transaction
+      number or transaction date.
+    backing_operation: GET https://api.ftc.gov/v0/hsr-early-termination-notices
+    input_schema_source: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+    inputs:
+      - title (string)
+      - transaction_number (integer)
+      - date (string, date)
+      - sort_by (string, "created"|"changed")
+      - sort_order (string, "ASC"|"DESC")
+      - items_per_page (integer)
+      - offset (integer)
+    read_only: true
+notes:
+  - Every candidate tool is read-only; the FTC API has no write surface.
+  - >-
+    No tool-crosswalk artifact is emitted: a crosswalk binds MCP tools to OpenAPI
+    operationIds, and this provider publishes neither a server nor an OpenAPI.

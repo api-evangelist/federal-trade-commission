@@ -1,0 +1,41 @@
+generated: '2026-09-09'
+method: searched
+source: >-
+  Registry and repository search 2026-09-09 — npm, PyPI, RubyGems, crates.io, Packagist,
+  NuGet, Maven Central, pkg.go.dev and https://github.com/FederalTradeCommission
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+description: >-
+  The Federal Trade Commission publishes no client libraries, in any language, for
+  https://api.ftc.gov/v0. Searched 2026-09-09. The agency's entire GitHub presence is two
+  repositories — ftc-api-docs (documentation only, last pushed 2020-04-29) and .github —
+  and neither contains code. No SDKs pointer is emitted; sdk_count is genuinely zero, not
+  unmeasured.
+package_count: 0
+official_package_count: 0
+packages: []
+near_misses:
+  - registry: pypi
+    name: ftc-api
+    url: https://pypi.org/project/ftc-api/
+    official: false
+    belongs_to: FIRST Tech Challenge
+    note: >-
+      NOT the Federal Trade Commission. A community client for the FIRST Tech Challenge
+      robotics API that shares the "FTC" acronym. Recorded so a later pass does not
+      mistake it for a first-party SDK.
+first_party_repositories:
+  - name: FederalTradeCommission/ftc-api-docs
+    url: https://github.com/FederalTradeCommission/ftc-api-docs
+    contents: README plus two markdown endpoint references
+    last_pushed: '2020-04-29'
+    is_client_library: false
+    note: >-
+      The only API-related code repository the agency operates, and it holds no code. Its
+      last push predates the April 2023 Drupal 9 response-shape change the FTC's own
+      website documents, so the GitHub copy of the docs is stale relative to ftc.gov.
+  - name: FederalTradeCommission/.github
+    url: https://github.com/FederalTradeCommission/.github
+    is_client_library: false

@@ -1,0 +1,147 @@
+generated: '2026-09-09'
+method: searched
+source: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+specification: API Commons Conventions
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+docs:
+  - https://www.ftc.gov/developer
+  - https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+  - https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+description: >-
+  Cross-cutting runtime semantics of the FTC public API (https://api.ftc.gov/v0), read
+  from the FTC's own endpoint reference pages and confirmed against live responses on
+  2026-09-09. The surface is READ-ONLY — GET only, no create/update/delete — which
+  determines the idempotency, dry-run and reversibility verdicts below.
+surface:
+  base_url: https://api.ftc.gov/v0
+  operations:
+    - GET /v0/dnc-complaints
+    - GET /v0/dnc-complaints/{id}
+    - GET /v0/hsr-early-termination-notices
+  read_only: true
+  write_operations: 0
+auth:
+  style: api-key
+  transport: api_key query parameter or X-Api-Key header
+  ref: authentication/federal-trade-commission-authentication.yml
+media_types:
+  request: none (GET only)
+  response:
+    - application/json
+    - application/vnd.api+json
+  note: >-
+    The HSR endpoint answers application/vnd.api+json and declares
+    {"jsonapi":{"version":"1.0"}}; the DNC endpoint answers application/json with a
+    JSON:API-shaped body (type/id/attributes/relationships) but no jsonapi member.
+envelope:
+  data: data[] of {type, id, attributes, relationships, links}
+  attribute_case: kebab-case (company-phone-number, acquiring-party, transaction-number)
+  meta_fields:
+    - count
+    - page
+    - pages-total
+    - records-this-page
+    - records-total
+  errors: see errors/federal-trade-commission-problem-types.yml
+pagination:
+  style: offset
+  params:
+    limit: items_per_page
+    offset: offset
+  max_page_size: 50
+  max_page_size_scope: DNC complaints endpoint (documented default and maximum)
+  response_fields:
+    - records-this-page
+    - records-total
+    - pages-total
+  cursor: false
+sorting:
+  params:
+    - sort_by (HSR: created | changed)
+    - sort_order (DESC default, ASC)
+filtering:
+  simple: '?filter[field]=value'
+  operators: '?filter[field][operator]=CONTAINS&filter[field][value]=term'
+  conditions: '?filter[date][condition][path]=date&filter[date][condition][operator]==&filter[date][condition][value]=2021-01-15'
+  named_shortcuts:
+    - created_date, created_date_from, created_date_to
+    - violation_date, violation_date_from, violation_date_to
+    - state, city (city requires state), area_code, is_robocall
+    - title, transaction_number, date
+  upstream_reference: https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module/filtering
+  note: >-
+    Filtering is Drupal JSON:API filtering; the FTC documents the shortcut parameters and
+    defers the full grammar to drupal.org.
+sparse_fieldsets:
+  supported: unknown
+  note: >-
+    Drupal JSON:API supports fields[TYPE] and include, but the FTC reference documents
+    neither, so it is not asserted here.
+versioning:
+  scheme: path
+  current: v0
+  in_url: true
+  stability: >-
+    "v0 … indicating the API is under active development" — the FTC's own wording. A
+    zero-major version is an explicit no-stability-promise.
+  source: https://www.ftc.gov/developer
+request_tracing:
+  client_header: null
+  response_headers:
+    - X-Api-Umbrella-Request-Id
+    - X-Vcap-Request-Id
+  observed: '2026-09-09'
+  note: >-
+    Both are gateway/platform identifiers (api.data.gov API Umbrella and the cloud.gov
+    Cloud Foundry router). The FTC does not document either, but they are the only
+    correlation IDs a consumer gets, so quote them in a support request.
+rate_limit_signaling:
+  ref: rate-limits/federal-trade-commission-rate-limits.yml
+  headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - Retry-After
+caching:
+  headers_observed:
+    - X-Cache
+  conditional_requests: unknown
+  note: 'X-Cache: MISS observed; no ETag or Last-Modified documented.'
+idempotency:
+  applicable: false
+  coverage: na
+  mechanism: none
+  scope: []
+  note: >-
+    NA, not a gap. The published API exposes no mutating operations — every documented
+    call is a GET — so there is nothing to replay-protect. An Idempotency-Key header
+    would have nothing to key. Should the FTC ever publish a write surface this must be
+    re-evaluated; no Idempotency pointer is emitted in apis.yml.
+dry_run_mode:
+  applicable: false
+  supported: na
+  note: Read-only surface; a rehearsal mode has no meaning here.
+reversibility:
+  applicable: false
+  grade: na
+  write_surfaces: []
+  note: >-
+    NA. Reversibility asks whether an action an agent takes can be taken back; the FTC API
+    takes no actions. There is no create, update, delete, cancel, refund or restore
+    operation on https://api.ftc.gov/v0, so there is nothing to reverse and no window to
+    state. This is an honest NA and leaves the denominator rather than scoring zero.
+data_freshness:
+  dnc_complaints: >-
+    "Data … typically updated each weekday by about noon Eastern time. Weekend data is
+    updated on Monday and holiday data is updated on the next business day."
+  source: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+transport:
+  https_required: true
+  http_response: 400 HTTPS_REQUIRED
+cross_links:
+  authentication: authentication/federal-trade-commission-authentication.yml
+  errors: errors/federal-trade-commission-problem-types.yml
+  rate_limits: rate-limits/federal-trade-commission-rate-limits.yml
+  lifecycle: lifecycle/federal-trade-commission-lifecycle.yml
+  data_model: data-model/federal-trade-commission-data-model.yml

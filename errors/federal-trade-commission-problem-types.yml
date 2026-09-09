@@ -1,0 +1,110 @@
+generated: '2026-09-09'
+method: searched
+source: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+specification: API Commons Error Catalog
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+docs:
+  - https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+  - https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+  - https://api.data.gov/docs/developer-manual/
+description: >-
+  Error surface for https://api.ftc.gov/v0. Two envelopes are in play: the api.data.gov
+  gateway answers auth and throttling failures with its own JSON error object before the
+  request ever reaches the FTC, and the FTC's Drupal JSON:API layer answers application
+  errors with a JSON:API `errors[]` array. Neither is RFC 9457 problem+json.
+format: vendor-json
+rfc9457: false
+problem_json_media_type_used: false
+envelopes:
+  - id: api-data-gov-gateway
+    layer: gateway (api.data.gov / API Umbrella)
+    media_type: application/json
+    shape: '{"error":{"code":"<CODE>","message":"<human text>"}}'
+    observed: '2026-09-09'
+    observed_example_url: https://api.ftc.gov/openapi.json
+    source: https://api.data.gov/docs/developer-manual/
+  - id: drupal-jsonapi
+    layer: application (FTC Drupal JSON:API)
+    media_type: application/vnd.api+json
+    shape: '{"jsonapi":{"version":"1.0"},"errors":[{"title":"...","status":"...","detail":"..."}]}'
+    source: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+status_codes:
+  - status: 200
+    meaning: Successful request
+  - status: 400
+    meaning: Request was made over HTTP rather than HTTPS
+  - status: 403
+    meaning: API key missing, invalid, disabled or unauthorized
+  - status: 404
+    meaning: Endpoint or record not found
+  - status: 429
+    meaning: Rate limit exceeded for this key or IP
+problem_types:
+  - code: API_KEY_MISSING
+    status: 403
+    title: No api_key was supplied
+    layer: gateway
+    detail: >-
+      Observed live 2026-09-09 against https://api.ftc.gov/openapi.json —
+      {"error":{"code":"API_KEY_MISSING","message":"No api_key was supplied. Get one at
+      https://api.ftc.gov:443"}}
+    remediation: >-
+      Register a free key at https://api.data.gov/signup/ and send it as the api_key query
+      parameter or the X-Api-Key header.
+    retryable: false
+  - code: API_KEY_INVALID
+    status: 403
+    title: Supplied api_key is not valid
+    layer: gateway
+    remediation: Re-check the key string; request a new one if it was rotated.
+    retryable: false
+  - code: API_KEY_DISABLED
+    status: 403
+    title: Key has been disabled
+    layer: gateway
+    remediation: Contact api.data.gov support to have the key re-enabled.
+    retryable: false
+  - code: API_KEY_UNAUTHORIZED
+    status: 403
+    title: Key is not authorized for this service
+    layer: gateway
+    remediation: Ask api.data.gov to grant this key access to the FTC service.
+    retryable: false
+  - code: API_KEY_UNVERIFIED
+    status: 403
+    title: Key's email address has not been verified
+    layer: gateway
+    remediation: Complete the email verification sent at signup.
+    retryable: false
+  - code: HTTPS_REQUIRED
+    status: 400
+    title: Request must be made over HTTPS
+    layer: gateway
+    remediation: Reissue the request against https://api.ftc.gov/v0/...
+    retryable: true
+  - code: OVER_RATE_LIMIT
+    status: 429
+    title: Rate limit exceeded
+    layer: gateway
+    detail: >-
+      Response carries X-RateLimit-Limit, X-RateLimit-Remaining: 0 and Retry-After
+      (8013 seconds observed 2026-09-09 on DEMO_KEY).
+    remediation: >-
+      Honour Retry-After, then resume. Register a key rather than using DEMO_KEY —
+      DEMO_KEY is limited per IP address, not per consumer.
+    retryable: true
+  - code: NOT_FOUND
+    status: 404
+    title: No such endpoint or record
+    layer: gateway
+    remediation: Check the path against https://www.ftc.gov/developer.
+    retryable: false
+gaps:
+  - >-
+    The FTC does not publish a first-party error reference; the code list above is the
+    api.data.gov gateway registry, which is what a consumer actually receives.
+  - >-
+    Drupal JSON:API application errors are not enumerated anywhere by the FTC, so no
+    per-code catalogue exists for the 4xx a malformed filter[] produces.

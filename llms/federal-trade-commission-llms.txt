@@ -1,0 +1,82 @@
+# Federal Trade Commission
+
+> The Federal Trade Commission (FTC) is the U.S. federal agency that enforces antitrust
+> and consumer protection law. It operates one small public, read-only REST API at
+> https://api.ftc.gov/v0 covering Do Not Call complaint reports and Hart-Scott-Rodino
+> early termination notices, plus a Project Open Data (DCAT-US 1.1) inventory of 95
+> datasets at https://www.ftc.gov/data.json. Its two other developer-facing programmes —
+> the National Do Not Call Registry telemarketer download and the Consumer Sentinel
+> Network — are gated behind registration and law-enforcement vetting and publish no
+> public contract.
+
+Generated 2026-09-09 by the API Evangelist enrichment pipeline from this repository's
+artifacts and the FTC's own public documentation. The FTC does not serve an llms.txt of
+its own: https://www.ftc.gov/llms.txt returned HTTP 404 on 2026-09-09.
+
+## Getting started
+
+- Base URL: https://api.ftc.gov/v0
+- Authentication: an api.data.gov API key, sent as `?api_key=` or the `X-Api-Key` header
+- Free key signup: https://api.data.gov/signup/
+- Try it with no signup: append `?api_key=DEMO_KEY` (rate limited per IP address)
+- HTTPS is required; plaintext requests are rejected with HTTP 400
+- Responses are JSON / JSON:API 1.0; pages are capped at 50 records
+
+## API reference
+
+- Developer portal: https://www.ftc.gov/developer
+- Do Not Call reported calls: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+- HSR early termination notices: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+- Documentation mirror: https://github.com/FederalTradeCommission/ftc-api-docs
+
+## Operations
+
+- GET /v0/dnc-complaints — search consumer reports of unwanted and robocall telemarketing.
+  Filters: created_date[_from|_to], violation_date[_from|_to], state, city (requires
+  state), area_code, is_robocall, sort_order, items_per_page (max 50), offset.
+- GET /v0/dnc-complaints/{id} — one complaint by its 32-character hex id.
+- GET /v0/hsr-early-termination-notices — search premerger early termination notices.
+  Filters: title (CONTAINS supported), transaction_number, date, sort_by (created|changed),
+  sort_order, items_per_page, offset. The programme was suspended in February 2021; the
+  endpoint serves the historical record.
+
+There are no write operations. Nothing in this API creates, changes or deletes anything.
+
+## Data
+
+- Federal open-data inventory (DCAT-US 1.1, 95 datasets): https://www.ftc.gov/data.json
+- Dataset landing pages: https://www.ftc.gov/site-information/open-government/data-sets
+- Do Not Call bulk data: https://www.ftc.gov/site-information/open-government/data-sets/do-not-call-data
+- data.gov catalog: https://catalog.data.gov/organization/ftc
+- Licence: U.S. Government public domain — http://www.usa.gov/publicdomain/label/1.0/
+
+## Gated programmes (no public contract)
+
+- National Do Not Call Registry, telemarketer access: https://telemarketing.donotcall.gov
+  Registration and a statutory annual per-area-code fee are required.
+- Consumer Sentinel Network: https://www.ftc.gov/enforcement/consumer-sentinel-network
+  Restricted to vetted law enforcement.
+- HSR premerger e-filing: https://www.hsr.gov
+
+## Policies
+
+- Vulnerability disclosure policy: https://www.ftc.gov/policy-notices/vulnerability-disclosure-policy
+- Vulnerability intake (Bugcrowd, no bounty): https://bugcrowd.com/ftc-vdp
+- Privacy policy: https://www.ftc.gov/policy-notices/privacy-policy
+- Website policy: https://www.ftc.gov/policy-notices/website-policy
+- All policy notices: https://www.ftc.gov/policy-notices
+
+## What the FTC does not publish
+
+Recorded so an agent does not waste calls looking: no OpenAPI, GraphQL, AsyncAPI, gRPC or
+WSDL description; no webhooks or event stream; no MCP server; no A2A agent card; no
+/.well-known documents of any kind (security.txt, api-catalog, openid-configuration all
+404 or soft-404 as of 2026-09-09); no SDKs or CLI in any package registry; no changelog,
+status page, SLA or deprecation policy; no pricing, because access is free.
+
+## Support
+
+- API and portal: webmaster@ftc.gov
+- HSR data: HSRHelp@ftc.gov
+- Open data: opengov@ftc.gov
+- Contact the agency: https://www.ftc.gov/about-ftc/contact

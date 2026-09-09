@@ -1,41 +1,46 @@
 aid: federal-trade-commission
 name: Federal Trade Commission
 description: >-
-  The Federal Trade Commission (FTC) is a U.S. federal agency that enforces
-  antitrust and consumer protection laws affecting virtually every area of
-  commerce. The FTC publishes developer-facing data products and APIs through
-  ftc.gov/developer and partner platforms, including the National Do Not Call
-  Registry telemarketer access program and the Consumer Sentinel Network of
-  consumer complaint data shared with law enforcement.
+  The Federal Trade Commission (FTC) is a U.S. federal agency that enforces antitrust
+  and consumer protection laws affecting virtually every area of commerce. The FTC
+  operates a small public, read-only REST API at https://api.ftc.gov/v0 — fronted by
+  the api.data.gov gateway and covering Do Not Call consumer complaint reports and
+  Hart-Scott-Rodino premerger early termination notices — alongside a Project Open Data
+  (DCAT-US 1.1) inventory of 95 datasets at https://www.ftc.gov/data.json. Two further
+  developer-facing programmes are gated rather than public: the National Do Not Call
+  Registry telemarketer download at telemarketing.donotcall.gov, and the Consumer
+  Sentinel Network of consumer complaint data shared with vetted law enforcement.
 type: Index
 deliveryModel:
-  model: unknown
+  model: hosted-api
   open_source: false
   commercial: false
-  callable_host: false
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
+  callable_host: true
+  label: Public hosted API, free, no commercial licence
+  confidence: high
   source:
-  - none
-  generated: '2026-08-28'
-  method: derived
+  - probe
+  - https://api.ftc.gov/v0/dnc-complaints
+  generated: '2026-09-09'
+  method: probed
 accessModel:
-  pricing: freemium
-  onboarding: unknown
-  trial: false
-  try_now: false
-  public: false
-  label: Freemium
-  confidence: medium
+  pricing: free
+  onboarding: self-service
+  trial: true
+  try_now: true
+  public: true
+  label: Free public API — self-service api.data.gov key, DEMO_KEY works with no signup
+  confidence: high
   source:
-  - plans
-  generated: '2026-07-22'
-  method: derived
+  - https://www.ftc.gov/developer
+  - https://api.data.gov/signup/
+  generated: '2026-09-09'
+  method: probed
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
 access: 3rd-Party
 created: '2024-12-03'
-modified: '2026-04-28'
-position: Consuming
+modified: '2026-09-09'
+position: Producing
 tags:
   - Antitrust
   - Consumer Protection
@@ -57,9 +62,10 @@ apis:
   - aid: federal-trade-commission:developer-portal
     name: FTC Developer Portal
     description: >-
-      The FTC Developer Portal is the central hub for developer documentation,
-      data dictionaries, and access program details for FTC-managed datasets
-      and services.
+      The FTC Developer Portal is the central hub for developer documentation, data
+      dictionaries, and access program details for FTC-managed datasets and services. It
+      names the API base URL (https://api.ftc.gov/v0), the api.data.gov key requirement,
+      and the two published endpoints.
     humanURL: https://www.ftc.gov/developer
     baseURL: https://api.ftc.gov
     tags:
@@ -68,40 +74,100 @@ apis:
     tags_raw:
       - Federal Government
       - Documentation
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: Documentation
         url: https://www.ftc.gov/developer
       - type: Website
         url: https://www.ftc.gov/
+      - type: SourceCode
+        url: https://github.com/FederalTradeCommission/ftc-api-docs
+  - aid: federal-trade-commission:dnc-complaints
+    name: Do Not Call (DNC) Reported Calls Data API
+    description: >-
+      Read-only REST endpoint returning consumer reports of unwanted and illegal
+      telemarketing calls, filterable by complaint date, violation date, consumer state
+      and city, originating area code and robocall flag. Responses are JSON:API-shaped,
+      capped at 50 records per page, and the corpus is refreshed each weekday by about
+      noon Eastern. Requires a free api.data.gov key; DEMO_KEY works without signup.
+    humanURL: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+    baseURL: https://api.ftc.gov/v0
+    tags:
+      - Do Not Call
+      - Consumer Protection
+      - Federal-Government
+      - Open Data
+    tags_raw:
+      - Do Not Call
+      - Consumer Protection
+      - Federal Government
+      - Open Data
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
+    properties:
+      - type: APIReference
+        url: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+      - type: Documentation
+        url: https://github.com/FederalTradeCommission/ftc-api-docs/blob/master/docs/endpoint-dnc-complaints.md
+  - aid: federal-trade-commission:hsr-early-termination-notices
+    name: HSR Early Termination Notices API
+    description: >-
+      Read-only REST endpoint returning Hart-Scott-Rodino premerger notifications for
+      which early termination of the waiting period was granted, filterable by title
+      keyword, transaction number and transaction date. Responses declare JSON:API 1.0.
+      The early termination programme was suspended in February 2021; the endpoint serves
+      the historical record. Requires a free api.data.gov key.
+    humanURL: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+    baseURL: https://api.ftc.gov/v0
+    tags:
+      - Antitrust
+      - Mergers
+      - Federal-Government
+      - Open Data
+    tags_raw:
+      - Antitrust
+      - Mergers
+      - Federal Government
+      - Open Data
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
+    properties:
+      - type: APIReference
+        url: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+      - type: Documentation
+        url: https://github.com/FederalTradeCommission/ftc-api-docs/blob/master/docs/endpoint-hsr-early-termination-notices.md
+      - type: About
+        url: https://www.ftc.gov/enforcement/competition-matters/2018/06/ftc-launches-first-web-api-make-early-terminations-more-accessible
   - aid: federal-trade-commission:do-not-call-registry
     name: National Do Not Call Registry
     description: >-
-      The National Do Not Call Registry program lets telemarketers and
-      sellers download phone-number data they must scrub against before
-      placing calls. Access is provisioned through telemarketer.donotcall.gov
-      and governed by the Telemarketing Sales Rule.
-    humanURL: https://telemarketers.donotcall.gov
+      The National Do Not Call Registry program lets telemarketers and sellers download
+      phone-number data they must scrub against before placing calls. Access is
+      provisioned through telemarketing.donotcall.gov, requires registration and a
+      statutory annual per-area-code fee, and is governed by the Telemarketing Sales Rule.
+      No public machine-readable contract is published for it.
+    humanURL: https://telemarketing.donotcall.gov
     tags:
       - Do Not Call
       - Consumer Protection
       - Telemarketing
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: Documentation
-        url: https://telemarketers.donotcall.gov
+        url: https://telemarketing.donotcall.gov
       - type: Consumer Site
         url: https://www.donotcall.gov
   - aid: federal-trade-commission:consumer-sentinel
     name: Consumer Sentinel Network
     description: >-
-      Consumer Sentinel is the FTC's secure online database of consumer
-      reports of fraud, identity theft, and other complaints, made available
-      to participating federal, state, local, and international law
-      enforcement agencies through a vetted access program.
+      Consumer Sentinel is the FTC's secure online database of consumer reports of fraud,
+      identity theft, and other complaints, made available to participating federal,
+      state, local, and international law enforcement agencies through a vetted access
+      program. Membership is required; no public API contract is published.
     humanURL: https://www.ftc.gov/enforcement/consumer-sentinel-network
     tags:
       - Consumer Protection
       - Law Enforcement
       - Fraud
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: Documentation
         url: https://www.ftc.gov/enforcement/consumer-sentinel-network
@@ -110,33 +176,76 @@ apis:
   - aid: federal-trade-commission:hsr-premerger
     name: HSR Premerger Notification
     description: >-
-      The Hart-Scott-Rodino (HSR) Premerger Notification Program coordinates
-      premerger filings reviewed by the FTC and DOJ. Filings are submitted
-      electronically through the dedicated HSR e-filing system.
+      The Hart-Scott-Rodino (HSR) Premerger Notification Program coordinates premerger
+      filings reviewed by the FTC and DOJ. Filings are submitted electronically through
+      the dedicated HSR e-filing system.
     humanURL: https://www.ftc.gov/enforcement/premerger-notification-program
     tags:
       - Antitrust
       - Mergers
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: Documentation
         url: https://www.ftc.gov/enforcement/premerger-notification-program
       - type: E-Filing
         url: https://www.hsr.gov
 common:
+  - type: DeveloperPortal
+    url: https://www.ftc.gov/developer
+  - type: Documentation
+    url: https://www.ftc.gov/developer
+  - type: APIReference
+    url: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+  - type: SignUp
+    url: https://api.data.gov/signup/
+  - type: Support
+    url: https://www.ftc.gov/about-ftc/contact
+  - type: TermsOfService
+    url: https://www.ftc.gov/policy-notices/website-policy
+  - type: PrivacyPolicy
+    url: https://www.ftc.gov/policy-notices/privacy-policy
+  - type: Security
+    url: https://www.ftc.gov/policy-notices/vulnerability-disclosure-policy
+  - type: VulnerabilityDisclosure
+    url: security/federal-trade-commission-vulnerability-disclosure.yml
   - type: DomainSecurity
     url: security/federal-trade-commission-domain-security.yml
+  - type: Authentication
+    url: authentication/federal-trade-commission-authentication.yml
+  - type: RateLimits
+    url: rate-limits/federal-trade-commission-rate-limits.yml
+  - type: Plans
+    url: plans/federal-trade-commission-plans-pricing.yml
+  - type: ErrorCatalog
+    url: errors/federal-trade-commission-problem-types.yml
+  - type: Conventions
+    url: conventions/federal-trade-commission-conventions.yml
+  - type: Conformance
+    url: conformance/federal-trade-commission-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/federal-trade-commission-lifecycle.yml
+  - type: DataModel
+    url: data-model/federal-trade-commission-data-model.yml
+  - type: Sandbox
+    url: sandbox/federal-trade-commission-sandbox.yml
+  - type: Packages
+    url: packages/federal-trade-commission-packages.yml
+  - type: LLMsTxt
+    url: llms/federal-trade-commission-llms.txt
+  - type: X-MCPServerCandidate
+    url: mcp/federal-trade-commission-mcp.yml
+  - type: DataCatalog
+    url: https://www.ftc.gov/data.json
   - type: GitHubOrganization
     url: https://github.com/FederalTradeCommission
   - type: LinkedIn
     url: https://www.linkedin.com/company/federal-trade-commission
   - type: Website
     url: https://www.ftc.gov/
-  - type: Documentation
-    url: https://www.ftc.gov/developer
   - type: News
     url: https://www.ftc.gov/news-events
   - type: Open Data
-    url: https://www.ftc.gov/policy/research
+    url: https://www.ftc.gov/site-information/open-government/data-sets
   - type: Consumer Resources
     url: https://consumer.ftc.gov
   - url: https://www.ftc.gov/feeds/press-release.xml
@@ -144,3 +253,8 @@ common:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-09'
+  status: enriched
+  artifacts_added: 12
+  pass: local-v3

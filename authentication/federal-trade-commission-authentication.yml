@@ -1,0 +1,77 @@
+generated: '2026-09-09'
+method: searched
+source: https://www.ftc.gov/developer
+specification: API Commons Authentication
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+docs:
+  - https://www.ftc.gov/developer
+  - https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+  - https://api.data.gov/docs/developer-manual/
+description: >-
+  The public FTC API (https://api.ftc.gov/v0) is fronted by api.data.gov (the GSA-run
+  API Umbrella gateway). Every request must carry an api.data.gov API key. There is no
+  OAuth, no OpenID Connect, no mTLS and no per-user token: one shared key per consumer,
+  self-issued through the api.data.gov signup form the FTC developer page links to.
+  Verified live on 2026-09-09 — an unkeyed request to https://api.ftc.gov/openapi.json
+  returned HTTP 403 with {"error":{"code":"API_KEY_MISSING"}}.
+schemes:
+  - id: api-data-gov-key-query
+    type: apiKey
+    in: query
+    name: api_key
+    description: >-
+      api.data.gov key passed as the api_key query-string parameter. This is the form the
+      FTC's own documented examples use (…/v0/dnc-complaints?api_key=DEMO_KEY).
+    applies_to:
+      - https://api.ftc.gov/v0/dnc-complaints
+      - https://api.ftc.gov/v0/hsr-early-termination-notices
+    source: https://www.ftc.gov/developer
+  - id: api-data-gov-key-header
+    type: apiKey
+    in: header
+    name: X-Api-Key
+    description: >-
+      The same api.data.gov key passed in the X-Api-Key request header. Preferred over the
+      query parameter because the key does not then appear in logs or referrers.
+    applies_to:
+      - https://api.ftc.gov/v0/dnc-complaints
+      - https://api.ftc.gov/v0/hsr-early-termination-notices
+    source: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+  - id: api-data-gov-key-basic
+    type: http
+    scheme: basic
+    description: >-
+      api.data.gov also accepts the key as the HTTP Basic username with an empty password.
+      Documented by the gateway operator, not by the FTC.
+    source: https://api.data.gov/docs/developer-manual/
+key_issuance:
+  issuer: api.data.gov (U.S. General Services Administration)
+  signup: https://api.data.gov/signup/
+  self_service: true
+  cost: free
+  approval: instant, email-verified
+  note: >-
+    The key is an api.data.gov key, not an FTC-issued credential — the same key works
+    against every api.data.gov-fronted federal API.
+transport:
+  https_required: true
+  http_behavior: HTTP requests are rejected with HTTP 400 / HTTPS_REQUIRED
+  source: https://www.ftc.gov/developer/api/v0/endpoints/hsr-early-termination-notices
+oauth: false
+openid_connect: false
+mtls: false
+scopes: false
+scopes_note: >-
+  No scope surface exists. The API is read-only and a key carries no per-resource
+  permissions, so scopes/ is deliberately absent for this provider.
+gated_surfaces:
+  - name: National Do Not Call Registry (telemarketer access)
+    url: https://telemarketing.donotcall.gov
+    auth: account registration + annual fee, provisioned by the FTC contractor
+    public_contract: false
+  - name: Consumer Sentinel Network
+    url: https://www.ftc.gov/enforcement/consumer-sentinel-network
+    auth: vetted law-enforcement membership
+    public_contract: false

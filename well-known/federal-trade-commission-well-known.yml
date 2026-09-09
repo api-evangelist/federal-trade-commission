@@ -1,0 +1,209 @@
+generated: '2026-09-09'
+method: probed
+source: probe of /.well-known/* across every host this record knows
+specification: API Commons Well-Known
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+description: >-
+  Named-path probe of /.well-known/ on every host in this record: the registrable domain
+  and www, the API host (api.ftc.gov), the docs host (www.ftc.gov), the consumer site, and
+  the two program hosts. NOTHING WAS SERVED. Every path either 404s, is refused by the
+  api.data.gov gateway before routing (403 API_KEY_MISSING), or returns an HTML page shell
+  with HTTP 200 — a soft-404, which is not a document. No WellKnown, APICatalog or
+  SecurityTxt pointer is emitted in apis.yml, because the FTC serves none of these files.
+  Recorded absence, not a gap in our probing.
+result: no-documents-served
+hosts:
+  - host: www.ftc.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+  - host: ftc.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+  - host: api.ftc.gov
+    note: >-
+      Fronted by api.data.gov (API Umbrella). Every path is refused with HTTP 403
+      {"error":{"code":"API_KEY_MISSING"}} before the FTC application is reached, so a
+      /.well-known document could not be served here even if one existed.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 403
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+        file: null
+      - path: /.well-known/api-catalog
+        status: 403
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 403
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 403
+        file: null
+      - path: /.well-known/agent.json
+        status: 403
+        file: null
+  - host: consumer.ftc.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+  - host: www.donotcall.gov
+    note: >-
+      SOFT-404. Every /.well-known/* path answers HTTP 200 with the same 6,284-byte HTML
+      page shell. Treated as a miss — a 200 returning HTML is not a document.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/api-catalog
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/agent-card.json
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/agent.json
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+  - host: www.hsr.gov
+    note: >-
+      SOFT-404. Every /.well-known/* path answers HTTP 200 with the same 1,027,525-byte
+      Drupal page. Treated as a miss.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/api-catalog
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/agent-card.json
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+      - path: /.well-known/agent.json
+        status: 200
+        file: null
+        body: html-shell
+        served: false
+  - host: telemarketing.donotcall.gov
+    note: >-
+      Reached (HTTP 200 on /), but /.well-known was not probed separately — the host is the
+      gated telemarketer portal, not an API host. Its predecessor hostname
+      telemarketers.donotcall.gov (previously carried in apis.yml) does not resolve in DNS
+      at all and was corrected in this pass.
+    documents: []
+adjacent:
+  - name: Federal open-data inventory
+    url: https://www.ftc.gov/data.json
+    status: 200
+    note: >-
+      NOT a /.well-known document, but it is the one machine-readable catalogue the FTC
+      does serve — Project Open Data / DCAT-US v1.1, 95 datasets, two of them API
+      endpoints. Wired in apis.yml as type DataCatalog and recorded in
+      conformance/federal-trade-commission-conformance.yml.

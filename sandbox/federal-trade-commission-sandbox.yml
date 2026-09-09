@@ -1,0 +1,50 @@
+generated: '2026-09-09'
+method: searched
+source: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+specification: API Commons Sandbox
+specificationVersion: '0.1'
+provider: Federal Trade Commission
+providerId: federal-trade-commission
+description: >-
+  There is no separate FTC sandbox environment — no test host, no test/live key split, no
+  fixtures, no time simulation. What exists is a real, published, no-signup credential:
+  the api.data.gov DEMO_KEY, which the FTC uses verbatim in its own documented examples
+  and which returns live production data at a reduced rate limit. That is the whole
+  try-before-you-register surface, and it works.
+environments:
+  - id: production
+    host: https://api.ftc.gov/v0
+    data: live
+    key_required: true
+sandbox_host: null
+test_live_key_split: false
+test_credentials:
+  - id: demo-key
+    value: DEMO_KEY
+    published_by: api.data.gov (used verbatim in the FTC's own examples)
+    source: https://www.ftc.gov/developer/api/v0/endpoints/do-not-call-dnc-reported-calls-data-api
+    signup_required: false
+    returns: live production data
+    limits:
+      published: 30 requests per IP per hour, 50 per IP per day
+      observed: >-
+        X-RateLimit-Limit: 10 on api.ftc.gov, 2026-09-09 — the FTC's gateway configuration
+        is tighter than the api.data.gov default.
+    verified: '2026-09-09'
+    verification: >-
+      GET https://api.ftc.gov/v0/dnc-complaints?api_key=DEMO_KEY returned HTTP 200 with a
+      populated data[] array; GET
+      https://api.ftc.gov/v0/hsr-early-termination-notices?api_key=DEMO_KEY returned HTTP
+      200 application/vnd.api+json.
+published_example_requests:
+  - 'GET https://api.ftc.gov/v0/dnc-complaints?api_key=DEMO_KEY&created_date_from="2020-02-27 04:10:00"&created_date_to="2020-02-27 04:30:00"'
+  - GET https://api.ftc.gov/v0/dnc-complaints/2dae54c3d3c06d1960689139d39c3138?api_key=DEMO_KEY
+  - 'GET https://api.ftc.gov/v0/hsr-early-termination-notices?api_key=DEMO_KEY&filter[title][operator]=CONTAINS&filter[title][value]=Blockbuster'
+test_data: []
+test_clocks: false
+fixtures: false
+triggers: false
+note: >-
+  Because the API is read-only, a sandbox in the mutating sense is unnecessary — there is
+  no state a caller can dirty. DEMO_KEY plus a 50-record page cap is a proportionate
+  try-now surface for a read-only public-data API.
