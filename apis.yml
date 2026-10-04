@@ -12,17 +12,20 @@ description: >-
   Sentinel Network of consumer complaint data shared with vetted law enforcement.
 type: Index
 deliveryModel:
-  model: hosted-api
-  open_source: false
-  commercial: false
-  callable_host: true
-  label: Public hosted API, free, no commercial licence
-  confidence: high
+  model: saas
+  license_evidence:
+    not_product:
+    - federaltradecommission/ftc-api-docs
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: low
   source:
-  - probe
-  - https://api.ftc.gov/v0/dnc-complaints
-  generated: '2026-09-09'
-  method: probed
+  - pricing
+  - repository-not-product
+  generated: '2026-09-25'
+  method: derived
 accessModel:
   pricing: free
   onboarding: self-service
@@ -45,7 +48,7 @@ tags:
   - Antitrust
   - Consumer Protection
   - Do Not Call
-  - Federal-Government
+  - Federal Government
   - Law Enforcement
   - Open Data
 tags_raw:
@@ -55,6 +58,7 @@ tags_raw:
   - Federal Government
   - Law Enforcement
   - Open Data
+  - Federal-Government
 url: >-
   https://raw.githubusercontent.com/api-evangelist/federal-trade-commission/refs/heads/main/apis.yml
 specificationVersion: '0.23'
@@ -69,11 +73,12 @@ apis:
     humanURL: https://www.ftc.gov/developer
     baseURL: https://api.ftc.gov
     tags:
-      - Federal-Government
+      - Federal Government
       - Documentation
     tags_raw:
       - Federal Government
       - Documentation
+      - Federal-Government
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: Documentation
@@ -95,13 +100,14 @@ apis:
     tags:
       - Do Not Call
       - Consumer Protection
-      - Federal-Government
+      - Federal Government
       - Open Data
     tags_raw:
       - Do Not Call
       - Consumer Protection
       - Federal Government
       - Open Data
+      - Federal-Government
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: APIReference
@@ -121,13 +127,14 @@ apis:
     tags:
       - Antitrust
       - Mergers
-      - Federal-Government
+      - Federal Government
       - Open Data
     tags_raw:
       - Antitrust
       - Mergers
       - Federal Government
       - Open Data
+      - Federal-Government
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/federal-trade-commission.png
     properties:
       - type: APIReference
@@ -164,6 +171,10 @@ apis:
       program. Membership is required; no public API contract is published.
     humanURL: https://www.ftc.gov/enforcement/consumer-sentinel-network
     tags:
+      - Consumer Protection
+      - Law Enforcement
+      - Fraud Prevention
+    tags_raw:
       - Consumer Protection
       - Law Enforcement
       - Fraud
