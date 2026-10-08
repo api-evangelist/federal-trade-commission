@@ -201,6 +201,8 @@ apis:
       - type: E-Filing
         url: https://www.hsr.gov
 common:
+  - type: FinOps
+    url: finops/federal-trade-commission-finops.yml
   - type: DeveloperPortal
     url: https://www.ftc.gov/developer
   - type: Documentation
